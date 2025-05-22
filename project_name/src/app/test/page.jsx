@@ -1,0 +1,250 @@
+'use client';
+import React, { useEffect, useRef } from 'react';
+import styles from './CelestialExperience.module.scss';
+
+export default function CelestialExperience() {
+  const starsRef = useRef([]);
+  const starryBgRef = useRef(null);
+  const moonRef = useRef(null);
+
+  // 커서 refs
+  const cursorRef = useRef(null);
+  const cursorAuraRef = useRef(null);
+
+  useEffect(() => {
+    // Enhanced Twinkling Stars
+    const starryBg = starryBgRef.current;
+    const moon = moonRef.current;
+
+    // 1) 별 생성
+    if (starryBg && starsRef.current.length === 0) {
+      const tempStars = [];
+      for (let i = 0; i < 500; i++) {
+        const star = document.createElement('div');
+        star.className = styles.star;
+        const size = Math.random() * 2 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.left = `${Math.random() * 100}%`;
+        if (Math.random() > 0.7) star.classList.add(styles.bright);
+        starryBg.appendChild(star);
+        tempStars.push(star);
+      }
+      starsRef.current = tempStars;
+    }
+
+    // 2) Shooting Stars
+    function createShootingStar() {
+      if (!starryBg) return;
+      const shootingStar = document.createElement('div');
+      shootingStar.className = styles.shootingStar;
+      const startTop = Math.random() * 90;
+      const startLeft = Math.random() * 100;
+      const duration = Math.random() * 4 + 2;
+      shootingStar.style.top = `${startTop}%`;
+      shootingStar.style.left = `${startLeft}%`;
+      shootingStar.style.setProperty('--duration', `${duration}s`);
+      starryBg.appendChild(shootingStar);
+      setTimeout(() => {
+        shootingStar.remove();
+      }, duration * 1000);
+    }
+    const shootingInterval = setInterval(createShootingStar, 1500);
+
+    // 3) 커서/별 proximity 이펙트
+    function handleMouseMove(e) {
+      const mouseX = e.clientX, mouseY = e.clientY;
+      // 커스텀 커서 위치
+      if (cursorRef.current && cursorAuraRef.current) {
+        cursorRef.current.style.left = `${mouseX}px`;
+        cursorRef.current.style.top = `${mouseY}px`;
+        cursorAuraRef.current.style.left = `${mouseX}px`;
+        cursorAuraRef.current.style.top = `${mouseY}px`;
+      }
+      // 별 proximity
+      starsRef.current.forEach(star => {
+        if (!star) return;
+        const rect = star.getBoundingClientRect();
+        const starX = rect.left + rect.width / 2;
+        const starY = rect.top + rect.height / 2;
+        const distance = Math.sqrt((mouseX - starX) ** 2 + (mouseY - starY) ** 2);
+        if (distance < 200) {
+          const proximityEffect = 1 - (distance / 200);
+          star.style.opacity = proximityEffect;
+          star.style.transform = `scale(${1 + proximityEffect * 0.5})`;
+          if (star.classList.contains(styles.bright)) {
+            star.style.boxShadow = `0 0 ${10 + proximityEffect * 10}px ${2 + proximityEffect * 3}px rgba(255,255,255,0.9)`;
+          }
+        } else {
+          star.style.opacity = '';
+          star.style.transform = '';
+          if (star.classList.contains(styles.bright)) {
+            star.style.boxShadow = '';
+          }
+        }
+      });
+      // 달 proximity
+      if (moonRef.current) {
+        const moonRect = moonRef.current.getBoundingClientRect();
+        const moonX = moonRect.left + moonRect.width / 2;
+        const moonY = moonRect.top + moonRect.height / 2;
+        const moonDistance = Math.sqrt((mouseX - moonX) ** 2 + (mouseY - moonY) ** 2);
+        if (moonDistance < 100) {
+          moonRef.current.style.boxShadow = 
+            `0 0 60px 25px rgba(245,245,220,0.8),0 0 120px 50px rgba(212,175,55,0.4)`;
+          moonRef.current.style.transform = 'scale(1.1)';
+        } else {
+          moonRef.current.style.boxShadow = '';
+          moonRef.current.style.transform = '';
+        }
+      }
+    }
+    document.addEventListener('mousemove', handleMouseMove);
+
+    // 4) Parallax Stars & Section Reveal
+    function handleScroll() {
+      const yPos = window.scrollY;
+      const stars = document.querySelector(`.${styles.stars}`);
+      if (stars) stars.style.transform = `translateY(${-yPos * 0.2}px)`;
+      document.querySelectorAll(`.${styles.bioContainer}`).forEach(container => {
+        const rect = container.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.8) container.classList.add(styles.visible);
+      });
+    }
+    window.addEventListener('scroll', handleScroll);
+
+    // 5) Milky Way 애니메이션
+    const milkyWay = document.querySelector(`.${styles.milkyWay}`);
+    const milkyAnim = setInterval(() => {
+      if (milkyWay)
+        milkyWay.style.transform = `translateX(-50%) rotate(${Math.sin(Date.now() / 5000) * 2}deg)`;
+    }, 50);
+
+    // 최초 체크
+    window.dispatchEvent(new Event('scroll'));
+
+    // 클린업
+    return () => {
+      clearInterval(shootingInterval);
+      clearInterval(milkyAnim);
+      document.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('scroll', handleScroll);
+      // 별/이펙트 클린업
+      if (starryBg) {
+        starsRef.current.forEach(star => star.remove());
+        starsRef.current = [];
+      }
+    };
+  }, []);
+
+  return (
+    <div className={styles.root}>
+      {/* 커스텀 커서 */}
+      <div className={styles.customCursor} ref={cursorRef} />
+      <div className={styles.cursorAura} ref={cursorAuraRef} />
+
+      {/* 별밤, 오로라, 달, 은하수 */}
+      <div className={styles.starryBackground} ref={starryBgRef}>
+        <div className={styles.colorfulNebula} />
+        <div className={styles.stars} />
+        <div className={styles.milkyWay} />
+        <div className={styles.moon} ref={moonRef} />
+        {/* Shooting stars(초기 5개만 마크업, 이후 JS 생성) */}
+        <div className={styles.shootingStar} style={{ top: '15%', left: '15%', '--duration': '4s' }} />
+        <div className={styles.shootingStar} style={{ top: '25%', left: '65%', '--duration': '6s' }} />
+        <div className={styles.shootingStar} style={{ top: '40%', left: '30%', '--duration': '5s' }} />
+        <div className={styles.shootingStar} style={{ top: '60%', left: '10%', '--duration': '7s' }} />
+        <div className={styles.shootingStar} style={{ top: '20%', left: '50%', '--duration': '3.5s' }} />
+      </div>
+
+      {/* Hero/프로필 소개 */}
+      <section className={styles.section}>
+        <div className={styles.profileContainer}>
+          <img
+            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80"
+            alt="Profile"
+            className={styles.profileImage}
+          />
+          <h1 className={styles.profileName}>Alex Johnson</h1>
+          <h2 className={styles.profileTitle}>Digital Creator & Space Enthusiast</h2>
+          <p className={styles.profileMessage}>
+            Hello! I'm Alex, a passionate creator who loves blending technology with the beauty of the cosmos.
+            Through my work, I aim to inspire wonder about our universe and create immersive digital experiences.
+          </p>
+          <p className={styles.profileMessage}>
+            When I'm not coding or designing, you'll find me stargazing or reading about the latest space discoveries.
+          </p>
+          <div className={styles.socialLinks}>
+            <a href="#" className={styles.socialLink}>📱</a>
+            <a href="#" className={styles.socialLink}>💻</a>
+            <a href="#" className={styles.socialLink}>📸</a>
+            <a href="#" className={styles.socialLink}>✉️</a>
+          </div>
+        </div>
+        {/* Scroll Indicator */}
+        <div className={styles.scrollIndicator}>
+          <span />
+          <span />
+          <span />
+        </div>
+      </section>
+
+      {/* Bio Section */}
+      <section className={styles.section}>
+        <div className={styles.bioContainer}>
+          <h2 className={styles.bioTitle}>My Journey</h2>
+          <p className={styles.bioText}>
+            My fascination with the cosmos began as a child when I first saw Saturn's rings through a telescope.
+            That moment sparked a lifelong passion for astronomy and space exploration.
+          </p>
+          <p className={styles.bioText}>
+            I combine my technical skills with my love for the stars to create projects that make space
+            more accessible and engaging for everyone.
+          </p>
+          <div className={styles.teamMembers}>
+            <div className={styles.teamMember}>
+              <div className={styles.memberAvatar}>🖥️</div>
+              <h3 className={styles.memberName}>Web Development</h3>
+              <p className={styles.memberRole}>Frontend Specialist</p>
+            </div>
+            <div className={styles.teamMember}>
+              <div className={styles.memberAvatar}>🎨</div>
+              <h3 className={styles.memberName}>UI/UX Design</h3>
+              <p className={styles.memberRole}>Visual Storyteller</p>
+            </div>
+            <div className={styles.teamMember}>
+              <div className={styles.memberAvatar}>🔭</div>
+              <h3 className={styles.memberName}>Astronomy</h3>
+              <p className={styles.memberRole}>Amateur Astronomer</p>
+            </div>
+            <div className={styles.teamMember}>
+              <div className={styles.memberAvatar}>📚</div>
+              <h3 className={styles.memberName}>Education</h3>
+              <p className={styles.memberRole}>Space Educator</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className={styles.section}>
+        <div className={styles.bioContainer}>
+          <h2 className={styles.bioTitle}>Let's Connect</h2>
+          <p className={styles.bioText}>
+            I'm always excited to collaborate on space-related projects or discuss the wonders of the universe.
+          </p>
+          <div className="mt-8 p-6 bg-purple-900 bg-opacity-30 rounded-xl backdrop-blur-md border border-purple-700 hover:border-purple-500 transition-all duration-300">
+            <h3 className="text-xl font-light mb-4">Get In Touch</h3>
+            <p className="mb-4">Send me a message about space, tech, or anything interesting!</p>
+            <div className="flex justify-center">
+              <input type="email" placeholder="Your email"
+                className="px-4 py-2 rounded-l-lg bg-gray-800 bg-opacity-70 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 w-64" />
+              <button className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-r-lg transition-colors">Send</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
