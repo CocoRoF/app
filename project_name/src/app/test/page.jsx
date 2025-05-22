@@ -7,26 +7,26 @@ export default function CelestialExperience() {
   const starryBgRef = useRef(null);
   const moonRef = useRef(null);
 
-  // 커서 refs
-  const cursorRef = useRef(null);
-  const cursorAuraRef = useRef(null);
 
   useEffect(() => {
-    // Enhanced Twinkling Stars
     const starryBg = starryBgRef.current;
-    const moon = moonRef.current;
 
     // 1) 별 생성
     if (starryBg && starsRef.current.length === 0) {
       const tempStars = [];
-      for (let i = 0; i < 500; i++) {
+      for (let i = 0; i < 150; i++) {
         const star = document.createElement('div');
         star.className = styles.star;
-        const size = Math.random() * 2 + 1;
+        const size = Math.random() * 4 + 1.5;
         star.style.width = `${size}px`;
         star.style.height = `${size}px`;
-        star.style.top = `${Math.random() * 100}%`;
-        star.style.left = `${Math.random() * 100}%`;
+        const { width: W, height: H } = starryBg.getBoundingClientRect();
+        const x = Math.random() * W;
+        const y = Math.random() * H;
+        star.style.top  = `${y}px`;
+        star.style.left = `${x}px`;
+        star.dataset.cx = x;
+        star.dataset.cy = y;
         if (Math.random() > 0.7) star.classList.add(styles.bright);
         starryBg.appendChild(star);
         tempStars.push(star);
@@ -55,26 +55,17 @@ export default function CelestialExperience() {
     // 3) 커서/별 proximity 이펙트
     function handleMouseMove(e) {
       const mouseX = e.clientX, mouseY = e.clientY;
-      // 커스텀 커서 위치
-      if (cursorRef.current && cursorAuraRef.current) {
-        cursorRef.current.style.left = `${mouseX}px`;
-        cursorRef.current.style.top = `${mouseY}px`;
-        cursorAuraRef.current.style.left = `${mouseX}px`;
-        cursorAuraRef.current.style.top = `${mouseY}px`;
-      }
-      // 별 proximity
       starsRef.current.forEach(star => {
         if (!star) return;
-        const rect = star.getBoundingClientRect();
-        const starX = rect.left + rect.width / 2;
-        const starY = rect.top + rect.height / 2;
-        const distance = Math.sqrt((mouseX - starX) ** 2 + (mouseY - starY) ** 2);
-        if (distance < 200) {
-          const proximityEffect = 1 - (distance / 200);
+        const sx = +star.dataset.cx;
+        const sy = +star.dataset.cy;
+        const distance = Math.sqrt((mouseX - sx) ** 2 + (mouseY - sy) ** 2);
+        if (distance < 300) {
+          const proximityEffect = 1 - (distance / 300);
           star.style.opacity = proximityEffect;
-          star.style.transform = `scale(${1 + proximityEffect * 0.5})`;
+          star.style.transform = `scale(${1 + proximityEffect * 4})`;
           if (star.classList.contains(styles.bright)) {
-            star.style.boxShadow = `0 0 ${10 + proximityEffect * 10}px ${2 + proximityEffect * 3}px rgba(255,255,255,0.9)`;
+            star.style.boxShadow = `0 0 ${10 + proximityEffect * 15}px ${2 + proximityEffect * 3}px rgba(255,255,255,1)`;
           }
         } else {
           star.style.opacity = '';
@@ -92,8 +83,8 @@ export default function CelestialExperience() {
         const moonDistance = Math.sqrt((mouseX - moonX) ** 2 + (mouseY - moonY) ** 2);
         if (moonDistance < 100) {
           moonRef.current.style.boxShadow = 
-            `0 0 60px 25px rgba(245,245,220,0.8),0 0 120px 50px rgba(212,175,55,0.4)`;
-          moonRef.current.style.transform = 'scale(1.1)';
+            `0 0 60px 25px rgba(245,245,220,0.8),0 0 120px 50px rgba(212,175,55,0.8)`;
+          moonRef.current.style.transform = 'scale(1.3)';
         } else {
           moonRef.current.style.boxShadow = '';
           moonRef.current.style.transform = '';
@@ -121,7 +112,6 @@ export default function CelestialExperience() {
         milkyWay.style.transform = `translateX(-50%) rotate(${Math.sin(Date.now() / 5000) * 2}deg)`;
     }, 50);
 
-    // 최초 체크
     window.dispatchEvent(new Event('scroll'));
 
     // 클린업
@@ -140,9 +130,7 @@ export default function CelestialExperience() {
 
   return (
     <div className={styles.root}>
-      {/* 커스텀 커서 */}
-      <div className={styles.customCursor} ref={cursorRef} />
-      <div className={styles.cursorAura} ref={cursorAuraRef} />
+
 
       {/* 별밤, 오로라, 달, 은하수 */}
       <div className={styles.starryBackground} ref={starryBgRef}>

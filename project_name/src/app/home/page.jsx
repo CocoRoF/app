@@ -30,7 +30,6 @@ export default function CelestialExperience() {
         const y = Math.random() * H;
         star.style.top  = `${y}px`;
         star.style.left = `${x}px`;
-        // 거리 계산용으로 저장
         star.dataset.cx = x;
         star.dataset.cy = y;
         starryBg.appendChild(star);
