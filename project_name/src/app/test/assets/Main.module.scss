@@ -2,8 +2,12 @@
 
 /* ---------- 글로벌 변수 ---------- */
 :root {
+  --primary: #7c3aed;
   --primary-color: #7c3aed;
+  --primary-light: #8b5cf6;
+  --secondary: #06b6d4;
   --secondary-color: #a78bfa;
+  --accent: #f472b6;
   --bg-color: #145aff;
   --card-bg: #1e293b;
   --font-heading: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -167,7 +171,8 @@
 /* ----------- SECTION/INTRO/PROFILE 공통 ----------- */
 .section,
 .introSection,
-.skillSection {
+.skillSection,
+.projectSection {
   position: relative;
   width: 100%;
   min-height: 100vh;
@@ -184,6 +189,9 @@
   min-height: auto;
   padding: 6rem 0;
   background-color: rgba(10, 10, 26, 0.2);
+}
+.projectSection {
+  min-height: auto;
 }
 
 .profileContainer {

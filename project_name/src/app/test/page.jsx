@@ -1,8 +1,9 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
-import styles from './Main.module.scss';
-import Skills from './Skills.jsx';
-import ResearchPublications from './Research.jsx';
+import styles from './assets/Main.module.scss';
+import Skills from './components/Skills.jsx';
+import ResearchPublications from './components/Research.jsx';
+import Projects from './components/Project.jsx';
 
 export default function CelestialExperience() {
     const starsRef = useRef([]);
@@ -180,10 +181,16 @@ export default function CelestialExperience() {
                 <Skills />
             </section>
 
+            {/* === Projects 삽입 === */}
+            <section className={styles.projectSection}>
+                <Projects />
+            </section>
+            
             {/* === Research & Publications Section 삽입 === */}
             <section className={styles.section}>
                 <ResearchPublications />
             </section>
+
 
             {/* Contact Section */}
             <section className={styles.section}>
