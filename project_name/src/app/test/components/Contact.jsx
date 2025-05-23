@@ -1,5 +1,4 @@
 'use client';
-import React from 'react';
 import styles from '../assets/Contact.module.scss';
 import { FaDownload } from 'react-icons/fa';
 

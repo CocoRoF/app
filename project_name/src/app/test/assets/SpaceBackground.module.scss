@@ -1,3 +1,89 @@
+/* Keep existing styles for .starryBackground, .colorfulNebula, .stars, .star, .bright, .milkyWay, .shootingStar */
+/* ... (previous styles) ... */
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 45px 20px rgba(255, 255, 220, 0.5),
+      0 0 90px 40px rgba(255, 220, 180, 0.4),
+      0 0 130px 60px rgba(255, 200, 100, 0.3);
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow: 0 0 60px 25px rgba(255, 255, 230, 0.7),
+      /* Brighter inner glow */
+      0 0 120px 50px rgba(255, 230, 190, 0.6),
+      /* Brighter mid glow */
+      0 0 180px 75px rgba(255, 210, 120, 0.5);
+    /* Brighter outer glow */
+    transform: scale(1.05);
+    /* Slight pulse effect */
+  }
+
+  100% {
+    box-shadow: 0 0 45px 20px rgba(255, 255, 220, 0.5),
+      0 0 90px 40px rgba(255, 220, 180, 0.4),
+      0 0 130px 60px rgba(255, 200, 100, 0.3);
+    transform: scale(1);
+  }
+}
+
+.moon {
+  position: absolute;
+  top: 10vh;
+  right: 15%;
+  width: 80px;
+  /* You can slightly increase size if desired, e.g., 90px */
+  height: 80px;
+  /* You can slightly increase size if desired, e.g., 90px */
+  /* Sharper, more defined moon surface gradient */
+  background: radial-gradient(circle at 35% 35%, #f0f0e0 0%, #e0e0d0 20%, #c0c0b0 50%, #a0a090 100%);
+  border-radius: 50%;
+  /* Initial box-shadow will be set by the animation */
+  animation: pulseGlow 5s infinite ease-in-out;
+  /* Apply the new animation */
+  z-index: 0;
+  /* Ensure it's above the background but below other interactive elements if any */
+  transition: all 0.5s ease;
+  /* Keep existing transition for mouse interactions */
+}
+
+/* Adjusted craters for the new moon look - making them a bit more subtle to not overpower the glow */
+.moon::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  /* Adjusted position */
+  left: 15px;
+  /* Adjusted position */
+  width: 18px;
+  /* Slightly smaller */
+  height: 18px;
+  /* Slightly smaller */
+  background-color: rgba(0, 0, 0, 0.15);
+  /* Slightly less dark */
+  border-radius: 50%;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.moon::after {
+  content: '';
+  position: absolute;
+  top: 30px;
+  /* Adjusted position */
+  left: 35px;
+  /* Adjusted position */
+  width: 9px;
+  /* Slightly smaller */
+  height: 9px;
+  /* Slightly smaller */
+  background-color: rgba(0, 0, 0, 0.12);
+  /* Slightly less dark */
+  border-radius: 50%;
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Rest of your SCSS file ... */
 .starryBackground {
   position: fixed;
   top: 0;
@@ -41,12 +127,21 @@
   opacity: 0.4;
   animation-name: twinkle;
 }
+
 .bright {
   box-shadow: 0 0 10px 4px rgba(255, 255, 255, 1);
 }
+
 @keyframes twinkle {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 .milkyWay {
@@ -62,42 +157,17 @@
   z-index: -1;
   animation: milkyWayGlow 15s infinite alternate;
 }
-@keyframes milkyWayGlow {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.9; }
-}
 
-.moon {
-  position: absolute;
-  top: 10vh;
-  right: 15%;
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle at 30% 30%, #fff 0%, #f5f5dc 30%, #d4af37 100%);
-  border-radius: 50%;
-  box-shadow: 0 0 40px 15px rgba(245, 245, 220, 0.4), 0 0 80px 30px rgba(212, 175, 55, 0.2);
-  z-index: -1;
-  transition: all 0.5s ease;
-}
-.moon::before {
-  content: '';
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 20px;
-  height: 20px;
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 50%;
-}
-.moon::after {
-  content: '';
-  position: absolute;
-  top: 25px;
-  left: 30px;
-  width: 10px;
-  height: 10px;
-  background-color: rgba(0, 0, 0, 0.15);
-  border-radius: 50%;
+@keyframes milkyWayGlow {
+
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
 }
 
 .shootingStar {
@@ -112,9 +182,24 @@
   transform-origin: left center;
   z-index: 1;
 }
+
 @keyframes shoot {
-  0% { transform: translateX(0) translateY(0) scale(0.2); opacity: 0; }
-  10% { transform: scale(0.5); opacity: 1; }
-  70% { opacity: 1; }
-  100% { transform: translateX(1000px) translateY(300px) scale(1.5); opacity: 0; }
+  0% {
+    transform: translateX(0) translateY(0) scale(0.2);
+    opacity: 0;
+  }
+
+  10% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(1000px) translateY(300px) scale(1.5);
+    opacity: 0;
+  }
 }
