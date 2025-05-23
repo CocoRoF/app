@@ -1,7 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
 
+/* ---------- 글로벌 변수 ---------- */
+:root {
+  --primary-color: #7c3aed;
+  --secondary-color: #a78bfa;
+  --bg-color: #145aff;
+  --card-bg: #1e293b;
+  --font-heading: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-body: 'Montserrat', sans-serif;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+  --shadow-sm: 0 1px 3px rgba(124, 58, 237, 0.2);
+  --shadow-md: 0 4px 6px rgba(124, 58, 237, 0.3);
+  --shadow-lg: 0 10px 15px rgba(124, 58, 237, 0.3);
+  --rounded-sm: 0.125rem;
+  --rounded-md: 0.375rem;
+  --rounded-lg: 0.5rem;
+  --transition: all 0.3s ease;
+}
+
+/* ---------- 기본 레이아웃 & 배경 ---------- */
 .root {
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   color: white;
   min-height: 100vh;
 }
@@ -50,6 +73,7 @@
   background: radial-gradient(ellipse at center, rgba(103, 58, 183, 0.2) 0%, rgba(33, 150, 243, 0.1) 30%, rgba(0, 0, 0, 0) 70%);
 }
 
+/* ----------- 별/반짝임/밀키웨이/달/유성 ----------- */
 .star {
   position: absolute;
   background-color: white;
@@ -57,10 +81,17 @@
   box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.7);
   transition: all 0.2s ease;
   pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+  animation-name: twinkle;
 }
-
 .bright {
   box-shadow: 0 0 10px 4px rgba(255, 255, 255, 1);
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
 }
 
 .milkyWay {
@@ -76,17 +107,9 @@
   z-index: -1;
   animation: milkyWayGlow 15s infinite alternate;
 }
-
 @keyframes milkyWayGlow {
-
-  0%,
-  100% {
-    opacity: 0.4;
-  }
-
-  50% {
-    opacity: 0.9;
-  }
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.9; }
 }
 
 .moon {
@@ -100,28 +123,26 @@
   box-shadow: 0 0 40px 15px rgba(245, 245, 220, 0.4), 0 0 80px 30px rgba(212, 175, 55, 0.2);
   z-index: -1;
   transition: all 0.5s ease;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 20px;
-    height: 20px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 50%;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 25px;
-    left: 30px;
-    width: 10px;
-    height: 10px;
-    background-color: rgba(0, 0, 0, 0.15);
-    border-radius: 50%;
-  }
+}
+.moon::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+}
+.moon::after {
+  content: '';
+  position: absolute;
+  top: 25px;
+  left: 30px;
+  width: 10px;
+  height: 10px;
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
 }
 
 .shootingStar {
@@ -136,43 +157,17 @@
   transform-origin: left center;
   z-index: 1;
 }
-
 @keyframes shoot {
-  0% {
-    transform: translateX(0) translateY(0) scale(0.2);
-    opacity: 0;
-  }
-
-  10% {
-    transform: scale(0.5);
-    opacity: 1;
-  }
-
-  70% {
-    opacity: 1;
-  }
-
-  100% {
-    transform: translateX(1000px) translateY(300px) scale(1.5);
-    opacity: 0;
-  }
+  0% { transform: translateX(0) translateY(0) scale(0.2); opacity: 0; }
+  10% { transform: scale(0.5); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translateX(1000px) translateY(300px) scale(1.5); opacity: 0; }
 }
 
-.section {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  box-sizing: border-box;
-  background-color: rgba(10, 10, 26, 0.5);
-  backdrop-filter: blur(2px);
-
-}
-.introSection {
+/* ----------- SECTION/INTRO/PROFILE 공통 ----------- */
+.section,
+.introSection,
+.skillSection {
   position: relative;
   width: 100%;
   min-height: 100vh;
@@ -185,13 +180,10 @@
   background-color: rgba(10, 10, 26, 0.2);
   backdrop-filter: blur(2px);
 }
-
 .skillSection {
-  height: auto;
   min-height: auto;
   padding: 6rem 0;
   background-color: rgba(10, 10, 26, 0.2);
-  backdrop-filter: blur(2px);
 }
 
 .profileContainer {
@@ -206,12 +198,11 @@
   box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
   border: 1px solid rgba(138, 43, 226, 0.2);
   transition: all 0.5s ease;
-
-  &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 0 50px rgba(138, 43, 226, 0.5);
-    border-color: rgba(138, 43, 226, 0.4);
-  }
+}
+.profileContainer:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 50px rgba(138, 43, 226, 0.5);
+  border-color: rgba(138, 43, 226, 0.4);
 }
 
 .profileImage {
@@ -224,7 +215,6 @@
   margin-bottom: 1.5rem;
   transition: all 0.5s ease;
 }
-
 .profileContainer:hover .profileImage {
   transform: scale(1.05);
   box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
@@ -237,14 +227,12 @@
   color: white;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
-
 .profileTitle {
   font-size: 1.2rem;
   color: #b0b0b0;
   margin-bottom: 1.5rem;
   font-weight: 400;
 }
-
 .profileMessage {
   font-size: 1.1rem;
   line-height: 1.8;
@@ -253,23 +241,20 @@
   margin-bottom: 1.5rem;
   color: #e0e0e0;
 }
-
 .socialLinks {
   display: flex;
   gap: 1.5rem;
   margin-top: 1rem;
 }
-
 .socialLink {
   color: white;
   font-size: 1.5rem;
   transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-3px);
-    color: #8a2be2;
-    text-shadow: 0 0 10px rgba(138, 43, 226, 0.7);
-  }
+}
+.socialLink:hover {
+  transform: translateY(-3px);
+  color: #8a2be2;
+  text-shadow: 0 0 10px rgba(138, 43, 226, 0.7);
 }
 
 .bioContainer {
@@ -278,13 +263,11 @@
   opacity: 0;
   transform: translateY(50px);
   transition: opacity 1s ease, transform 1s ease;
-
-  &.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
-
+.bioContainer.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 .bioTitle {
   font-size: 2.5rem;
   font-weight: 300;
@@ -292,7 +275,6 @@
   color: #fff;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
-
 .bioText {
   font-size: 1.2rem;
   line-height: 1.8;
@@ -300,6 +282,7 @@
   color: #e0e0e0;
 }
 
+/* ----------- TEAM ----------- */
 .teamMembers {
   display: flex;
   flex-wrap: wrap;
@@ -307,7 +290,6 @@
   gap: 2rem;
   margin-top: 3rem;
 }
-
 .teamMember {
   width: 150px;
   text-align: center;
@@ -317,14 +299,12 @@
   backdrop-filter: blur(5px);
   border: 1px solid rgba(138, 43, 226, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(138, 43, 226, 0.4);
-    border-color: rgba(138, 43, 226, 0.6);
-  }
 }
-
+.teamMember:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(138, 43, 226, 0.4);
+  border-color: rgba(138, 43, 226, 0.6);
+}
 .memberAvatar {
   width: 100px;
   height: 100px;
@@ -339,22 +319,20 @@
   box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
   transition: all 0.3s ease;
 }
-
 .teamMember:hover .memberAvatar {
   box-shadow: 0 0 30px rgba(138, 43, 226, 0.8);
   transform: scale(1.05);
 }
-
 .memberName {
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
-
 .memberRole {
   font-size: 0.9rem;
   color: #b0b0b0;
 }
 
+/* ----------- 스크롤 인디케이터 ----------- */
 .scrollIndicator {
   position: absolute;
   bottom: 50px;
@@ -364,43 +342,34 @@
   flex-direction: column;
   align-items: center;
   z-index: 20;
-
-  span {
-    display: block;
-    width: 20px;
-    height: 20px;
-    border-bottom: 2px solid white;
-    border-right: 2px solid white;
-    transform: rotate(45deg);
-    margin: -10px;
-    animation: scroll-down 2s infinite;
-
-    &:nth-child(2) {
-      animation-delay: -0.2s;
-    }
-
-    &:nth-child(3) {
-      animation-delay: -0.4s;
-    }
-  }
 }
-
+.scrollIndicator span {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-bottom: 2px solid white;
+  border-right: 2px solid white;
+  transform: rotate(45deg);
+  margin: -10px;
+  animation: scroll-down 2s infinite;
+}
+.scrollIndicator span:nth-child(2) { animation-delay: -0.2s; }
+.scrollIndicator span:nth-child(3) { animation-delay: -0.4s; }
 @keyframes scroll-down {
   0% {
     opacity: 0;
     transform: rotate(45deg) translate(-20px, -20px);
   }
-
   50% {
     opacity: 1;
   }
-
   100% {
     opacity: 0;
     transform: rotate(45deg) translate(20px, 20px);
   }
 }
 
+/* ----------- 커스텀 커서 ----------- */
 .customCursor {
   position: fixed;
   width: 20px;
@@ -413,7 +382,6 @@
   z-index: 9999;
   transition: transform 0.1s ease;
 }
-
 .cursorAura {
   position: fixed;
   width: 40px;
@@ -427,43 +395,35 @@
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-/* 반응형 */
+/* ----------- 반응형 ----------- */
 @media (max-width: 768px) {
   .profileContainer {
     padding: 1.5rem;
     margin: 0 1rem;
   }
-
   .profileImage {
     width: 140px;
     height: 140px;
   }
-
   .profileName {
     font-size: 2rem;
   }
-
   .profileTitle {
     font-size: 1rem;
   }
-
   .profileMessage {
     font-size: 1rem;
   }
-
   .bioTitle {
     font-size: 2rem;
   }
-
   .bioText {
     font-size: 1rem;
   }
-
   .teamMembers {
     flex-direction: column;
     align-items: center;
   }
-
   .moon {
     width: 60px;
     height: 60px;
