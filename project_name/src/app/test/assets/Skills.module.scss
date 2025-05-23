@@ -1,6 +1,13 @@
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 .skillCard {
@@ -34,6 +41,7 @@
 .chevron {
   transition: transform 0.3s ease;
 }
+
 .expanded .chevron {
   transform: rotate(180deg);
 }
@@ -49,6 +57,7 @@
   opacity: 0;
   transition: all 0.3s ease 0.1s;
 }
+
 .expanded .skillDetails {
   transform: translateY(0);
   opacity: 1;
