@@ -170,6 +170,28 @@
   box-sizing: border-box;
   background-color: rgba(10, 10, 26, 0.5);
   backdrop-filter: blur(2px);
+
+}
+.introSection {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+  background-color: rgba(10, 10, 26, 0.2);
+  backdrop-filter: blur(2px);
+}
+
+.skillSection {
+  height: auto;
+  min-height: auto;
+  padding: 6rem 0;
+  background-color: rgba(10, 10, 26, 0.2);
+  backdrop-filter: blur(2px);
 }
 
 .profileContainer {

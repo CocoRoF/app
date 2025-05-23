@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
 import styles from './CelestialExperience.module.scss';
+import CelestialSkills from '../test2/page.jsx';
 
 export default function CelestialExperience() {
     const starsRef = useRef([]);
@@ -142,7 +143,7 @@ export default function CelestialExperience() {
             </div>
 
             {/* Hero/프로필 소개 */}
-            <section className={styles.section}>
+            <section className={styles.introSection}>
                 <div className={styles.profileContainer}>
                     <img
                         src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80"
@@ -174,40 +175,8 @@ export default function CelestialExperience() {
             </section>
 
             {/* Bio Section */}
-            <section className={styles.section}>
-                <div className={styles.bioContainer}>
-                    <h2 className={styles.bioTitle}>My Journey</h2>
-                    <p className={styles.bioText}>
-                        My fascination with the cosmos began as a child when I first saw Saturn's rings through a telescope.
-                        That moment sparked a lifelong passion for astronomy and space exploration.
-                    </p>
-                    <p className={styles.bioText}>
-                        I combine my technical skills with my love for the stars to create projects that make space
-                        more accessible and engaging for everyone.
-                    </p>
-                    <div className={styles.teamMembers}>
-                        <div className={styles.teamMember}>
-                            <div className={styles.memberAvatar}>🖥️</div>
-                            <h3 className={styles.memberName}>Web Development</h3>
-                            <p className={styles.memberRole}>Frontend Specialist</p>
-                        </div>
-                        <div className={styles.teamMember}>
-                            <div className={styles.memberAvatar}>🎨</div>
-                            <h3 className={styles.memberName}>UI/UX Design</h3>
-                            <p className={styles.memberRole}>Visual Storyteller</p>
-                        </div>
-                        <div className={styles.teamMember}>
-                            <div className={styles.memberAvatar}>🔭</div>
-                            <h3 className={styles.memberName}>Astronomy</h3>
-                            <p className={styles.memberRole}>Amateur Astronomer</p>
-                        </div>
-                        <div className={styles.teamMember}>
-                            <div className={styles.memberAvatar}>📚</div>
-                            <h3 className={styles.memberName}>Education</h3>
-                            <p className={styles.memberRole}>Space Educator</p>
-                        </div>
-                    </div>
-                </div>
+            <section className={styles.skillSection}>
+                <CelestialSkills />
             </section>
 
             {/* Contact Section */}
