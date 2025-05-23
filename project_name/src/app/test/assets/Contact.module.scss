@@ -49,12 +49,15 @@
     margin-bottom: 1.5rem;
 }
 
-/* 입력 영역 */
+/* "Input" area - now just for the button */
 .inputRow {
     display: flex;
     justify-content: center;
+    /* This will center the button */
 }
 
+/* Input field - No longer used, but kept for reference or future use if needed */
+/*
 .input {
     padding: 0.6rem 1rem;
     border-radius: 0.5rem 0 0 0.5rem;
@@ -70,32 +73,48 @@
         box-shadow: 0 0 0 2px #a78bfa;
     }
 }
+*/
 
 .sendButton {
-    padding: 0.6rem 1.2rem;
-    border-radius: 0 0.5rem 0.5rem 0;
+    /* Renamed from .sendButton, but styles are similar to a call-to-action button */
+    padding: 0.8rem 1.5rem;
+    /* Slightly larger padding for a standalone button */
+    border-radius: 0.5rem;
+    /* Rounded corners on all sides */
     border: none;
     background: #a78bfa;
     color: #241257;
     font-weight: 500;
     font-size: 1rem;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    display: inline-flex;
+    /* To align icon and text */
+    align-items: center;
+    /* To align icon and text */
+    justify-content: center;
+    /* To align icon and text */
 
     &:hover {
         background: #7c3aed;
         color: #fff;
+        transform: translateY(-2px);
+        /* Subtle lift effect */
     }
 }
 
 /* 반응형 */
 @media (max-width: 768px) {
     .contactCard {
-        padding: 1rem;
+        padding: 1.5rem;
+        /* Adjusted padding for smaller screens */
     }
 
-    .input {
-        width: 9rem;
+    .sendButton {
+        width: auto;
+        /* Allow button to size based on content */
+        padding: 0.7rem 1.2rem;
+        /* Adjust padding for smaller screens */
         font-size: 0.95rem;
     }
 
