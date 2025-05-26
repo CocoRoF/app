@@ -1,0 +1,267 @@
+// components/ImageGallery.module.scss
+
+// --- 전역 스타일 참고 ---
+// 다음 변수들과 스타일들은 Next.js 프로젝트의 `styles/globals.scss` 또는 최상위 레이아웃 컴포넌트에 적용하는 것이 좋습니다.
+// 여기서는 설명을 위해 ImageGallery.module.scss 안에 포함하지만, 실제 프로젝트에서는 분리하는 것을 권장합니다.
+
+// SCSS Variables (기존 :root 변수 대체)
+$primary-color: #7c3aed;
+$secondary-color: #a78bfa;
+$text-color: #e2e8f0;
+$bg-color: #0f172a;
+$card-bg: #1e293b;
+$font-heading: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+$font-body: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+$shadow-sm: 0 1px 3px rgba(124, 58, 237, 0.2);
+$shadow-md: 0 4px 6px rgba(124, 58, 237, 0.3);
+$shadow-lg: 0 10px 15px rgba(124, 58, 237, 0.3);
+$rounded-lg: 0.5rem;
+$transition: all 0.3s ease;
+
+// --- 전역 스타일 예시 (globals.scss에 위치할 내용) ---
+/*
+body {
+  font-family: $font-body;
+  color: $text-color;
+  background-color: $bg-color;
+  line-height: 1.6;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 20%),
+    radial-gradient(circle at 90% 30%, rgba(167, 139, 250, 0.1) 0%, transparent 25%),
+    radial-gradient(circle at 50% 80%, rgba(124, 58, 237, 0.1) 0%, transparent 30%);
+}
+*/
+
+// --- 컴포넌트 스타일 ---
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.h2 { // h2 태그 대신 클래스명 사용 권장
+  font-family: $font-heading;
+  font-size: 2rem;
+  font-weight: 700;
+  color: $secondary-color;
+  margin-bottom: 2rem;
+  text-align: center;
+  position: relative;
+  text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+
+  &::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $primary-color, transparent);
+    margin: 0.5rem auto;
+    border-radius: 2px;
+  }
+}
+
+/* Gallery Grid */
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.galleryCard {
+  background-color: $card-bg;
+  border-radius: $rounded-lg;
+  box-shadow: $shadow-sm;
+  padding: 1.5rem;
+  transition: $transition;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+    transform: rotate(30deg);
+    opacity: 0;
+    transition: $transition;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: $shadow-lg;
+    border-color: rgba(124, 58, 237, 0.5);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  h3 {
+    font-family: $font-heading;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $secondary-color;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .description { // p 태그 대신 클래스명 사용
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+    color: rgba(226, 232, 240, 0.9);
+  }
+}
+
+.mainImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: $rounded-lg;
+  cursor: pointer;
+  transition: $transition;
+  margin-bottom: 1rem;
+  box-shadow: $shadow-sm;
+  border: 1px solid rgba(124, 58, 237, 0.3);
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: $shadow-md;
+    border-color: $primary-color;
+  }
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: $transition;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.modalContent {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modalImage {
+  max-height: 80vh;
+  max-width: 90vw;
+  object-fit: contain;
+  border-radius: $rounded-lg;
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
+  // 애니메이션을 React 상태 또는 클래스로 제어하는 것이 좋음
+  // animation: float 2s ease-in-out infinite; // 필요 시 JS에서 제어
+}
+
+@keyframes float { // float 애니메이션은 SCSS 파일에 유지
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+// .modalImage에 float 애니메이션을 적용하려면,
+// useEffect 등을 사용하여 이미지가 변경될 때 애니메이션을 재시작하는 로직이 필요할 수 있습니다.
+// 여기서는 CSS에서 직접 적용하지 않고, 필요시 React에서 클래스 토글 등으로 관리하도록 남겨둡니다.
+
+.modalCaption {
+  margin-top: 1rem;
+  text-align: center;
+  color: $text-color;
+  font-size: 1.125rem;
+  max-width: 80%;
+  h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1.2em;
+    color: $secondary-color;
+  }
+  p {
+    font-size: 0.9em;
+  }
+}
+
+.modalNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem; // 모바일 화면 고려하여 패딩 조정
+  z-index: 2;
+
+  @media (min-width: 768px) { // 데스크탑에서는 좀 더 넓은 패딩
+    padding: 0 2rem;
+  }
+}
+
+.modalNavBtn {
+  background-color: rgba(124, 58, 237, 0.5);
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: $transition;
+  font-size: 1.5rem;
+
+  &:hover {
+    background-color: $primary-color;
+    transform: scale(1.1);
+  }
+}
+
+.modalClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(124, 58, 237, 0.5);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: $transition;
+  font-size: 1.2rem;
+  z-index: 3; // modalNav보다 위에 있도록
+
+  &:hover {
+    background-color: $primary-color;
+    transform: rotate(90deg);
+  }
+}
+
+// Star 관련 스타일 제거
+// @keyframes twinkle, .star 등은 제거됨.
